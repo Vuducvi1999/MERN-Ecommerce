@@ -1,0 +1,34 @@
+Q1: Tại sao model user phải có timestamps ?
+- Hỗ trợ cập nhật profile của user
+
+Q2: Sử dụng timestamps như thế nào?
+- Khi signup sẽ khởi tạo createdAt và updateAt.
+- Thay đổi profile sẽ thay đổi updateAt.
+
+Q3: Hoạt động của bcrypt?
+- Là 1 thuật toán mã hóa 1 chiều, không thể truy vết lại raw password cho dù có được hashed password, NHỜ SỬ DỤNG RANDOM SALT.
+- Nhưng có thể so khớp raw password với hashed password.
+
+Q4: "res.cookie("t", token, { expire: new Date() + 60 * 60 })" có ý nghĩa gì trong khi sign in?
+- Để Sign Out
+
+Q5: token để làm gì?
+-  Để mỗi lần gửi request, server sẽ verity token có hợp lệ không.
+
+Q6: NHững bài cần lưu ý khi xem lại?
+- User by id middleware phần 4: giải thích hoạt động của express-jwt, từ khóa Bearer
+- Create category và product in React.
+
+Q5: req.auth là gì?
+- Là payload của token khi decode.
+
+Q6: Hoạt động kiểm chứng signin?
+
+Q7: Sign out như thế nào?
+
+Q8: Tại sao findById không hoạt động?
+- id không tồn tại trả về 1 object rỗng, nếu id tồn tại sẽ trả về object chứa thông tin 
+
+Q9: Giải đáp React Router?
+- Đơn giản: chỉ có 2 bộ phận - Chuyển hướng sử dụng <NavLink/>, <Redirect/>
+                            - Xác thực sử dụng <PrivateRoute/>
