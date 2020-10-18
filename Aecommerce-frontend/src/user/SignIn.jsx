@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { authenticate, signin } from "../auth";
 import Layout from "../core/Layout";
 import { isAuth } from "./../auth/index";
@@ -76,8 +76,11 @@ function SignIn() {
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-block">
-          Submit
+        <div>
+          Have no account, <Link to="/signup">sign up</Link>
+        </div>
+        <button type="submit" className="btn btn-block mt-2">
+          Sign In
         </button>
       </form>
     );

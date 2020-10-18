@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { Order } = require("./order");
 
 // Create Schema
 const User = new Schema(
@@ -20,7 +21,7 @@ const User = new Schema(
       trim: true,
     },
     role: { type: Number, default: 0 },
-    history: { type: Array, default: [] },
+    history: [{ type: mongoose.Types.ObjectId, ref: "order" }],
   },
   { timestamps: true }
 );

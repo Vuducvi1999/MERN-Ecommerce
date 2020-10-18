@@ -9,22 +9,25 @@ function AdminDashboard() {
   } = isAuth();
   return (
     <Layout title="Dashboard" description={`Hello ${name}`}>
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-md-4">
             <div className="card">
               <h4 className="card-header">Admin Links</h4>
               <ul className="list-group list-group-flush">
                 <Link className="list-group-item" to="/create/category">
                   Create Category
                 </Link>
-                <Link className="list-group-item" to="/create/product">
-                  Create Product
+                <Link className="list-group-item" to="/products">
+                  Products
+                </Link>
+                <Link className="list-group-item" to="/orders">
+                  View Orders
                 </Link>
               </ul>
             </div>
           </div>
-          <div className="col-md-9">
+          <div className="col-md-8">
             <div className="card">
               <h4 className="card-header">Admin Information</h4>
               <ul className="list-group list-group-flush">

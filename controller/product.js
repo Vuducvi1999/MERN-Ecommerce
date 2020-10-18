@@ -1,13 +1,11 @@
 const Product = require("../model/product");
 const formidable = require("formidable");
 const fs = require("fs");
-const { propertyOf } = require("lodash");
-const { publicDecrypt } = require("crypto");
-const Category = require("../model/category");
 
 module.exports.productById = (req, res, next, id) => {
   Product.findById(id)
     .populate("category")
+    .populate({ path: "rate", populate: { path: "user" } })
     .catch((err) => res.status(400).json({ err: "Product not found" }))
     .then((product) => {
       if (!product) return res.status(400).json({ err: "Product not found" });
@@ -31,15 +29,8 @@ module.exports.Create = (req, res) => {
     if (err) return res.status(400).json({ err: "Image can't upload" });
 
     // Check Fields required
-    const { name, description, price, category, quantity, shipping } = fields;
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !category ||
-      !quantity ||
-      !shipping
-    ) {
+    const { name, description, price, category, quantity } = fields;
+    if (!name || !description || !price || !category || !quantity) {
       return res.status(400).json({
         err: "All fields are required",
       });
@@ -138,9 +129,19 @@ module.exports.List = (req, res) => {
 };
 
 module.exports.ListHomeSearch = (req, res) => {
-  let nameProduct = req.body.name || "";
-  let category = req.body.category || "";
-  Product.find({ name: { $regex: nameProduct, $options: "i" }, category })
+  let name = req.body.name || "";
+  let category = req.body.category;
+
+  Product.find(
+    category
+      ? {
+          name: { $regex: name, $options: "i" },
+          category,
+        }
+      : {
+          name: { $regex: name, $options: "i" },
+        }
+  )
     .select("-photo")
     .populate("category")
     .then((products) => res.json(products))
@@ -213,4 +214,28 @@ module.exports.Photo = (req, res, next) => {
   if (req.product.photo.data) {
     return res.send(req.product.photo.data);
   } else return res.json({ msg: "not found image" });
+};
+
+module.exports.updateRate = (req, res) => {
+  const product = req.product;
+  // if (req.body.rate.review)
+  //   if (req.body.rate.review.trim())
+  //     req.body.rate.review = req.body.rate.review.trim();
+  //   else req.body.rate.review = "";
+  // else req.body.rate.review = "";
+
+  if (product.rate.find((p) => String(p.user._id) == String(req.profile._id))) {
+    product.rate.forEach((p) => {
+      if (String(p.user._id) == String(req.profile._id)) {
+        p.rate = req.body.rate.rate;
+        p.review = req.body.rate.review;
+      }
+    });
+  } else product.rate = [...product.rate, req.body.rate];
+
+  product.save().then((data) =>
+    res.json({
+      rate: data.rate.reduce((p, x) => p + x.rate, 0) / data.rate.length,
+    })
+  );
 };

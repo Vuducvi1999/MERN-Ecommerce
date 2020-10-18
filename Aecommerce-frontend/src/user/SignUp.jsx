@@ -77,8 +77,11 @@ function SignUp() {
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-block">
-          Submit
+        <div>
+          Already have account, <Link to="/signin">sign in</Link>
+        </div>
+        <button type="submit" className="btn btn-block mt-2">
+          Sign Up
         </button>
       </form>
     );

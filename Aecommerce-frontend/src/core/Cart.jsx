@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import Layout from "./Layout";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { API_URL } from "../config";
 import { useEffect } from "react";
 import { updateItems, removeFromCart } from "../actions/products";
-import { _updateItems, _totalPrice } from "./cartHelpers";
-import { isAuth } from "../auth";
+import Checkout from "./Checkout";
 
 function Cart({ items, ...props }) {
   const [total, setTotal] = useState();
 
   useEffect(() => {
-    setTotal(_totalPrice());
+    setTotal(items.reduce((pre, cur) => pre + cur.quantity * cur.price, 0));
   }, [items]);
 
   const Item = (product) => (
@@ -98,19 +97,6 @@ function Cart({ items, ...props }) {
     </div>
   );
 
-  const Checkout = () => <>{isAuth() ? checkoutBtn() : signinBtn()}</>;
-
-  const signinBtn = () => (
-    <Link to="/signin">
-      <button className="btn btn-primary">SignIn</button>
-    </Link>
-  );
-  const checkoutBtn = () => (
-    <Link to="/checkout">
-      <button className="btn btn-success">Checkout</button>
-    </Link>
-  );
-
   return (
     <Layout
       description="Manage your added product"
@@ -118,16 +104,16 @@ function Cart({ items, ...props }) {
       className="container-fluid"
     >
       <div className="row no-gutters">
-        <div className="col-md-8 col-sm-12 px-3">
+        <div className="col-md-7 col-sm-12 px-3">
           <h3>Your cart has {items.length} items</h3>
           {items.map((p) => Item(p))}
           <div className="total-price-cart">
             <p>Total:&nbsp;${total} </p>
           </div>
         </div>
-        <div className="col-md-4 px-3 col-sm-12">
+        <div className="col-md-5 px-3 col-sm-12">
           <h3 style={{ marginBottom: "1rem" }}>Checkout</h3>
-          {Checkout()}
+          <Checkout />
         </div>
       </div>
     </Layout>
@@ -140,4 +126,6 @@ const mapstate2props = (state) => {
   };
 };
 
-export default connect(mapstate2props, { updateItems, removeFromCart })(Cart);
+export default connect(mapstate2props, { updateItems, removeFromCart })(
+  memo(Cart)
+);

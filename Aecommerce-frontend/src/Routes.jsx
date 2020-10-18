@@ -15,9 +15,13 @@ import UserDashboard from "./user/UserDashboard";
 import { connect } from "react-redux";
 import { loadItemsLocalstorage } from "./actions/products";
 import { useEffect } from "react";
+import Order from "./admin/Order";
+import DetailOrder from "./core/DetailOrder";
+import Products from "./core/Products";
+import UpdateUser from "./user/UpdateUser";
 
 const Routes = (props) => {
-  useEffect(() => props.loadItemsLocalstorage(), []);
+  useEffect(() => props.loadItemsLocalstorage(), [props]);
 
   return (
     <BrowserRouter>
@@ -38,8 +42,14 @@ const Routes = (props) => {
         <AdminRoute path="/create/product">
           <AddProduct />
         </AdminRoute>
+        <AdminRoute path="/products" component={Products} />
+        <AdminRoute path="/orders">
+          <Order />
+        </AdminRoute>
         <Route path="/product/:productId" component={Product} />
         <Route path="/cart" component={Cart} />
+        <PrivateRoute path="/profile/update/:userId" component={UpdateUser} />
+        <AdminRoute path="/order/:orderId" component={DetailOrder} />
       </Switch>
     </BrowserRouter>
   );

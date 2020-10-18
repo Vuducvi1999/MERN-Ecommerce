@@ -4,14 +4,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../config";
 import "../user/style.css";
-// import { addToCart, isInCart, removeFromCart } from "./cartHelpers";
 import { uuid } from "./uuid";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "./../actions/products";
-import { _addToCart, _removeFromCart } from "./cartHelpers";
+import ReactStars from "react-rating-stars-component";
+import { isAuth } from "../auth";
+import { memo } from "react";
 
-const Card = ({ product, ...props }) => {
-  const [isInStock, setIsInStock] = useState();
+const Card = ({ product, isAdded, ...props }) => {
+  const [isInStock, setIsInStock] = useState(isAdded);
 
   useEffect(() => {
     setIsInStock(props.items.find((p) => p._id === product._id) ? true : false);
@@ -25,11 +26,9 @@ const Card = ({ product, ...props }) => {
       label.current.innerText = " ...read more";
       showText.current.className = "d-none";
     }
-    console.log(product);
   };
 
   const uniqueString = uuid();
-
   const label = useRef();
   const showText = useRef();
 
@@ -37,15 +36,18 @@ const Card = ({ product, ...props }) => {
     <div className="padding-product">
       <div className={`product-card `}>
         <div className="image-container-card">
-          <Link
-            to={{ pathname: `/product/${product._id}`, hash: uniqueString }}
-          >
-            <img
-              src={`${API_URL}/product/photo/${product._id}`}
-              className="image-product-card"
-              alt={product.name}
-            />
-          </Link>
+          <div className="image-card">
+            <Link
+              className="d-inline-block"
+              to={{ pathname: `/product/${product._id}`, hash: uniqueString }}
+            >
+              <img
+                src={`${API_URL}/product/photo/${product._id}`}
+                alt={product.name}
+                className="image-product-card"
+              />
+            </Link>
+          </div>
         </div>
         <div className="detail-card">
           <p className="product-name-card">{product.name}</p>
@@ -84,13 +86,27 @@ const Card = ({ product, ...props }) => {
           <p className="product-category-card d-inline-block">
             Category: &nbsp;
           </p>
+          <div className="rate-card">
+            <ReactStars
+              size={20}
+              value={
+                product.rate.length !== 0
+                  ? product.rate.reduce((p, x) => p + x.rate, 0) /
+                    product.rate.length
+                  : 0
+              }
+              activeColor="#ffd700"
+              classNames="rates"
+              isHalf={true}
+              edit={false}
+            />
+          </div>
           <h3 className="product-category-h3">{product.category.name}</h3>
           {isInStock ? (
             <button
               className="btn-remove-card mt-3"
               onClick={() => {
                 props.removeFromCart(product);
-                _removeFromCart(product._id);
                 setIsInStock(false);
               }}
             >
@@ -101,7 +117,6 @@ const Card = ({ product, ...props }) => {
               className="btn-buy-card mt-3"
               onClick={() => {
                 props.addToCart(product);
-                _addToCart(product);
                 setIsInStock(true);
               }}
             >
@@ -121,4 +136,6 @@ const mapstate2props = (state) => {
     items: state.products,
   };
 };
-export default connect(mapstate2props, { addToCart, removeFromCart })(Card);
+export default connect(mapstate2props, { addToCart, removeFromCart })(
+  memo(Card)
+);

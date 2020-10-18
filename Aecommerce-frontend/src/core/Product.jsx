@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { API_URL } from "../config";
 import { relatedProduct, singleProduct } from "./coreApi";
@@ -6,15 +6,17 @@ import Layout from "./Layout";
 import moment from "moment";
 import Card from "./Card";
 import { connect } from "react-redux";
-import { addToCart, removeFromCart, updateItems } from "./../actions/products";
-import { _addToCart, _removeFromCart, _updateItems } from "./cartHelpers";
+import {
+  addToCart,
+  loadReviews,
+  removeFromCart,
+  updateItems,
+} from "./../actions/products";
+import ReactStars from "react-rating-stars-component";
 import { uuid } from "./uuid";
-// import {
-//   addToCart,
-//   isInCart,
-//   removeFromCart,
-//   updateItems,
-// } from "./cartHelpers";
+import { isAuth } from "../auth";
+import Review from "./Review";
+import { memo } from "react";
 
 function Product(props) {
   const [product, setProduct] = useState();
@@ -22,19 +24,25 @@ function Product(props) {
   const [related, setRelated] = useState([]);
   const [isInStock, setIsInStock] = useState(false);
 
+  const { user } = isAuth();
+  const unique = uuid();
+
   useEffect(() => {
     singleProduct(props.match.params.productId).then((data) => {
       setProduct(data.product);
+      props.loadReviews(data.product.rate);
+
+      console.log(data.product);
+
       const item = props.items.find((p) => p._id === data.product._id);
       setTotal(item ? item.quantity : 0);
       setIsInStock(item ? true : false);
     });
+
     relatedProduct(props.match.params.productId).then((data) => {
       setRelated(data);
     });
-  }, [props]);
-
-  const unique = uuid();
+  }, [props.match.params.productId]);
 
   const RelatedProducts = () => (
     <>
@@ -48,7 +56,7 @@ function Product(props) {
 
   const Detail = () => (
     <>
-      <div className="col-lg-8">
+      <div className="col-md-8 col-sm-12">
         <div className="product">
           <div className="image-container">
             <img
@@ -97,6 +105,25 @@ function Product(props) {
                   </span>
                 </span>
               </div>
+              <div className="review-rate d-flex align-items-center">
+                <ReactStars
+                  size={25}
+                  value={
+                    product.rate.length !== 0
+                      ? product.rate.reduce((p, x) => p + x.rate, 0) /
+                        product.rate.length
+                      : 0
+                  }
+                  edit={false}
+                  activeColor="#ffd700"
+                  classNames="rates"
+                  isHalf={true}
+                />
+                <span className="number-review ml-3">
+                  {product.rate.length !== 0 ? product.rate.length : 0}
+                  &nbsp;reviews
+                </span>
+              </div>
               <div className="calculate-product">
                 <div className="crement">
                   <button
@@ -115,6 +142,9 @@ function Product(props) {
                     type="number"
                     className="input-total"
                     value={total}
+                    onChange={(e) =>
+                      setTotal(e.target.value ? e.target.value : 0)
+                    }
                     name="total"
                   />
                   <button
@@ -157,12 +187,13 @@ function Product(props) {
           </div>
         </div>
       </div>
-      <div className="col-lg-4">
+      <div className="col-md-4 col-sm-6">
         <div className="related-product">
-          <h2>Related Products</h2>
+          <h2>Related Products</h2>{" "}
           <div className="row pr-3">{RelatedProducts()}</div>
         </div>
       </div>
+      <Review product={product} user={user} />
     </>
   );
 
@@ -186,6 +217,7 @@ function Product(props) {
 const mapstate2props = (state) => {
   return {
     items: state.products,
+    review: state.review,
   };
 };
 
@@ -193,4 +225,5 @@ export default connect(mapstate2props, {
   addToCart,
   removeFromCart,
   updateItems,
-})(Product);
+  loadReviews,
+})(memo(Product));

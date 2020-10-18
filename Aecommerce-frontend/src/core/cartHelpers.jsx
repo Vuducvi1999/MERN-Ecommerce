@@ -17,6 +17,7 @@ export const _updateItems = (id, count) => {
   items.map((p) => {
     if (p._id === id) {
       p.quantity = count;
+      return p;
     }
   });
 
@@ -25,7 +26,7 @@ export const _updateItems = (id, count) => {
 
 export const _totalPrice = () => {
   if (!items) return 0;
-  return items.reduce((pre, cur, index) => pre + cur.quantity * cur.price, 0);
+  return items.reduce((pre, cur) => pre + cur.quantity * cur.price, 0);
 };
 
 export const _isInCart = (id) => {
@@ -50,4 +51,5 @@ export const _addToCart = (product) => {
   }
 };
 
-export const _cartItems = () => items;
+export const _resetItems = () =>
+  localStorage.setItem("cart", JSON.stringify([]));

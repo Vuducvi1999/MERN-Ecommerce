@@ -7,11 +7,7 @@ function AdminRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        isAuth() && isAuth().user.role === 1 ? (
-          children
-        ) : (
-          <Redirect to={{ pathname: "/" }} />
-        )
+        isAuth() && isAuth().user.role === 1 ? children : <Redirect to="/" />
       }
     />
   );

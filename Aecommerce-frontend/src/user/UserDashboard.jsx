@@ -5,26 +5,26 @@ import { isAuth } from "../auth/index";
 
 function UserDashboard() {
   const {
-    user: { email, name },
+    user: { email, name, _id },
   } = isAuth();
   return (
     <Layout title="Dashboard" description={`Hello ${name}`}>
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-md-4">
             <div className="card">
               <h4 className="card-header">User Links</h4>
               <ul className="list-group list-group-flush">
                 <Link className="list-group-item" to="/cart">
                   My Cart
                 </Link>
-                <Link className="list-group-item" to="/profile/update">
-                  Update Profile
+                <Link className="list-group-item" to={`/profile/update/${_id}`}>
+                  Profile
                 </Link>
               </ul>
             </div>
           </div>
-          <div className="col-md-9">
+          <div className="col-md-8">
             <div className="card">
               <h4 className="card-header">User Information</h4>
               <ul className="list-group list-group-flush">

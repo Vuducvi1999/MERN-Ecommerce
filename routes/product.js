@@ -12,6 +12,7 @@ const {
   CategoryList,
   ListBySearch,
   Photo,
+  updateRate,
   ListHomeSearch,
 } = require("../controller/product");
 const { userById } = require("../controller/user");
@@ -34,6 +35,8 @@ route.get("/products/related/:productId", RelatedList);
 route.get("/products/categories", CategoryList);
 
 route.post("/products/by/search", ListBySearch);
+
+route.post("/products/rate/:productId/:userId", updateRate);
 
 route.get("/product/photo/:productId", Photo);
 

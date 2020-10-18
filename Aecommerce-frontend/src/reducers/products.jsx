@@ -2,6 +2,7 @@ import {
   ADD_TO_CART,
   LOAD_ITEMS,
   REMOVE_FROM_CART,
+  RESET_ITEMS,
   UPDATE_ITEMS,
 } from "./../actions/actionTypes";
 
@@ -17,6 +18,8 @@ export const productReducer = (state = initialState, action) => {
       return [...action.payload];
     case LOAD_ITEMS:
       return [...action.payload];
+    case RESET_ITEMS:
+      return action.payload;
     default:
       return state;
   }

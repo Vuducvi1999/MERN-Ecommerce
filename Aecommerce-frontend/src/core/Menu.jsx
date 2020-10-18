@@ -1,10 +1,7 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { isAuth, signout } from "../auth";
 import "../user/style.css";
-import { totalItems } from "./cartHelpers";
 import Logo from "./Logo.png";
 import { connect } from "react-redux";
 

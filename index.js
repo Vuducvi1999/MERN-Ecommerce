@@ -8,6 +8,7 @@ const AuthRouter = require("./routes/auth");
 const UserRouter = require("./routes/user");
 const CategoryRouter = require("./routes/category");
 const ProductRouter = require("./routes/product");
+const OrderRouter = require("./routes/order");
 
 // using dependencies
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api", AuthRouter);
 app.use("/api", UserRouter);
 app.use("/api", CategoryRouter);
 app.use("/api", ProductRouter);
+app.use("/api", OrderRouter);
 
 // connect db
 mongoose

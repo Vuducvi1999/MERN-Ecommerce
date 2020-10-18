@@ -13,7 +13,6 @@ function AddProduct() {
     quantity: 0,
     sold: 0,
     photo: "",
-    shipping: false,
     err: "",
     redirect: false,
     success: false,
@@ -30,10 +29,13 @@ function AddProduct() {
     formData,
   } = values;
 
+  const onEffect = async () => {
+    const data = await getCategories();
+    setValues({ ...values, categories: data, formData: new FormData() });
+  };
+
   useEffect(() => {
-    getCategories().then((data) => {
-      setValues({ ...values, categories: data, formData: new FormData() });
-    });
+    onEffect();
   }, []);
 
   const { user, token } = isAuth();
@@ -61,12 +63,16 @@ function AddProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (quantity === 0) formData.set("quantity", 0);
+    if (sold === 0) formData.set("sold", 0);
+    if (price === 0) formData.set("price", 0);
     CreateProduct(user._id, token, formData).then((data) => {
       if (data.err) setValues({ ...values, err: data.err, success: false });
       else {
         setValues({ ...values, err: false, success: true });
       }
       window.scrollTo(0, 0);
+      console.log(formData);
     });
   };
 
@@ -144,22 +150,6 @@ function AddProduct() {
               {i.name}
             </option>
           ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Shipping</label>
-        <select
-          name="shipping"
-          className="form-control"
-          onChange={handleChange}
-        >
-          <option selected disabled>
-            Select
-          </option>
-
-          <option value={false}>No</option>
-          <option value={true}>Yes</option>
         </select>
       </div>
 

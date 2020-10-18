@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Rate = new Schema({
+  user: { type: mongoose.Types.ObjectId, ref: "user" },
+  rate: Number,
+  review: { type: String, default: "" },
+});
+
 // Create Schema
 const Product = new Schema(
   {
@@ -24,9 +30,9 @@ const Product = new Schema(
     sold: { type: Number, default: 0 },
     photo: { data: Buffer, contentType: String },
     shipping: {
-      required: false,
       type: Boolean,
     },
+    rate: [Rate],
   },
   { timestamps: true }
 );

@@ -8,8 +8,8 @@ route.get("/secret/:userId", RequireSignIn, isAdmin, (req, res) =>
   res.json({ user: req.profile })
 );
 
-route.get("/user/:userId", RequireSignIn, isAdmin, Read);
-route.put("/user/:userId", RequireSignIn, isAdmin, Update);
+route.get("/user/:userId", RequireSignIn, Read);
+route.put("/user/:userId", RequireSignIn, Update);
 
 route.param("userId", userById);
 

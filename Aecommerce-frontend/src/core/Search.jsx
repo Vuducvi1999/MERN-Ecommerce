@@ -5,13 +5,13 @@ import { searchHomeProducts } from "./coreApi";
 
 function Search({ categories }) {
   const [values, setValues] = useState({
-    category: "default",
+    category: "",
     name: "",
     products: [],
     err: "",
   });
 
-  const { category, name, products } = values;
+  const { category, name } = values;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,9 +67,7 @@ function Search({ categories }) {
               onChange={handleChange}
               value={values.category}
             >
-              <option value="default" disabled>
-                Search for category
-              </option>
+              <option value="">All</option>
               {categories.map((p, k) => (
                 <option key={k} value={p._id}>
                   {p.name}
@@ -98,4 +96,4 @@ function Search({ categories }) {
   );
 }
 
-export default memo(Search);
+export default Search;
