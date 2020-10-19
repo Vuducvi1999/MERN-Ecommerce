@@ -81,11 +81,13 @@ function Search({ categories }) {
               value={values.category}
             >
               <option value="">All</option>
-              {categories.map((p, k) => (
-                <option key={k} value={p._id}>
-                  {p.name}
-                </option>
-              ))}
+              {categories
+                ? categories.map((p, k) => (
+                    <option key={k} value={p._id}>
+                      {p.name}
+                    </option>
+                  ))
+                : ""}
             </select>
           </div>
           <input
