@@ -5,7 +5,7 @@ import { isAuth } from "./../auth/index";
 
 function AdminDashboard() {
   const {
-    user: { email, name },
+    user: { email, name, _id },
   } = isAuth();
   return (
     <Layout title="Dashboard" description={`Hello ${name}`}>
@@ -15,8 +15,11 @@ function AdminDashboard() {
             <div className="card">
               <h4 className="card-header">Admin Links</h4>
               <ul className="list-group list-group-flush">
+                <Link className="list-group-item" to={`/profile/update/${_id}`}>
+                  Profile
+                </Link>
                 <Link className="list-group-item" to="/create/category">
-                  Create Category
+                  Categories
                 </Link>
                 <Link className="list-group-item" to="/products">
                   Products

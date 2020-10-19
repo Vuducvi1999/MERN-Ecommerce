@@ -51,22 +51,16 @@ function Review({ review, product, loadReviews, user, ...props }) {
       ];
 
     loadReviews(review);
+    console.log(review);
   };
 
   const Review = () => (
-    <div className="" style={{ paddingLeft: "2rem" }}>
+    <div className="mt-5">
       <h5>YOUR REVIEW</h5>
       {user ? (
         <div className="person-review">
           <div className="d-flex align-items-center">
             <span>Vote:&nbsp;</span>
-            {/* <ReactStars
-              value={values.rate}
-              onChange={changeRating}
-              activeColor="#ffd700"
-              classNames="rates d-inline"
-              isHalf={true}
-            /> */}
             <StarRating
               size="1.5rem"
               className="py-2"
@@ -102,13 +96,9 @@ function Review({ review, product, loadReviews, user, ...props }) {
         review.map((p) => (
           <div className="rated-view" key={p._id}>
             <p className="m-0">{p.user.name}</p>
-            {/* <ReactStars
-              value={p.rate}
-              activeColor="#ffd700"
-              isHalf={true}
-              edit={false}
-            /> */}
+
             <StarRating rate={p.rate} />
+            <p>{new Date(p.updatedAt).toLocaleDateString()}</p>
             <p style={{ marginTop: "1rem" }}>
               {p.review ? (
                 p.review

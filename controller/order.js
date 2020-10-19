@@ -78,3 +78,10 @@ module.exports.setStatus = (req, res) => {
     .then((data) => res.json({ order: data }))
     .catch((err) => res.status(400).json({ err: "Couldn't set status order" }));
 };
+
+module.exports.deleteOrder = (req, res) => {
+  const user = req.profile;
+  Order.findByIdAndDelete(req.params.orderId)
+    .then((data) => res.json({ order: data }))
+    .catch((err) => res.status(400).json({ err: "Couldn't delete order" }));
+};

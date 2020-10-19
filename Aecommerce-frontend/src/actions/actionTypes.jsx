@@ -10,3 +10,4 @@ export const RESET_ITEMS = "RESET_ITEMS";
 export const ARRIVAL_ITEMS = "ARRIVAL_ITEMS";
 export const SELL_ITEMS = "SELL_ITEMS";
 export const LOAD_REVIEWS = "LOAD_REVIEWS";
+export const LOAD_ORDERS = "LOAD_ORDERS";

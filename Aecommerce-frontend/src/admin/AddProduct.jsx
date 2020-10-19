@@ -31,6 +31,7 @@ function AddProduct() {
 
   const onEffect = async () => {
     const data = await getCategories();
+    console.log(data);
     setValues({ ...values, categories: data, formData: new FormData() });
   };
 

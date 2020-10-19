@@ -1,16 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap");
 
-*,
+* {
+  padding: 0;
+  margin: 0;
+}
 body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Raleway", sans-serif;
   scroll-behavior: smooth;
+  position: relative;
 }
 
 .light-border.rounded:hover {
   background-color: hsla(0, 0%, 100%, 0.1) !important;
+}
+
+.hide-navbar {
+  transform: translateY(-100%);
+}
+.show-navbar {
+  transform: translateY(-0%);
+}
+
+.banner {
+  height: 60vh;
+}
+.title-banner {
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.8);
 }
 
 .navbar {
@@ -19,6 +37,7 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
+  transition-duration: 0.3s;
 }
 
 .padding-product {
@@ -149,6 +168,13 @@ body {
 .btn-remove-card:focus {
   outline: none;
 }
+
+.no-outline:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: #9999;
+}
+
 .btn-buy-card:active,
 .btn-remove-card:focus {
   transform: scale(0.97);

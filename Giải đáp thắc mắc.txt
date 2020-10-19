@@ -32,3 +32,6 @@ Q8: Tại sao findById không hoạt động?
 Q9: Giải đáp React Router?
 - Đơn giản: chỉ có 2 bộ phận - Chuyển hướng sử dụng <NavLink/>, <Redirect/>
                             - Xác thực sử dụng <PrivateRoute/>
+
+Q10: footer luôn ở cuối trang ?
+- css <body> có 'min-height: 100vh'

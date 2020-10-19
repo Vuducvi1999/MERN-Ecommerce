@@ -15,11 +15,11 @@ function UserDashboard() {
             <div className="card">
               <h4 className="card-header">User Links</h4>
               <ul className="list-group list-group-flush">
-                <Link className="list-group-item" to="/cart">
-                  My Cart
-                </Link>
                 <Link className="list-group-item" to={`/profile/update/${_id}`}>
                   Profile
+                </Link>
+                <Link className="list-group-item" to="/cart">
+                  My Cart
                 </Link>
               </ul>
             </div>

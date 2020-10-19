@@ -65,7 +65,12 @@ function Home({ items, arrival, sell, ...props }) {
 
   return (
     <div>
-      <Layout title="Home" description="Welcome to AnhViPanDan Shop">
+      <Layout
+        banner
+        marginTop={false}
+        title="Welcome to AnhViPanDan Shop"
+        description="Best shop in the world"
+      >
         <div className="container">
           <Search categories={values.categories} />
           <h2 className="mb-4">New Arrival</h2>

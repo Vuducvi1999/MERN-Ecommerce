@@ -54,7 +54,6 @@ function StarRating({
               ></div>
               <div
                 className="right-star"
-                mouseOverLeft
                 onMouseOver={() => (hover ? mouseOverRight(star) : null)}
                 onMouseOut={mouseOut}
                 onClick={

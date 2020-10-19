@@ -48,7 +48,7 @@ function Checkout({ items, ...props }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    items.find((i) => i.quantity === 0)
+    items.length === 0 || items.find((i) => i.quantity === 0)
       ? setValues({ ...values, err: "Couldn't process empty product" })
       : createOrder(user._id, token, {
           products: items,
@@ -67,6 +67,20 @@ function Checkout({ items, ...props }) {
   return (
     <>
       <div className="info-checkout">
+        <label>
+          <input type="radio" checked />
+          <span className="ml-2">Cash on delivery (COD)</span>
+        </label>
+        <label className="d-block">
+          <input type="radio" disabled />
+          <span className="ml-2 text-muted">Online payment (unavailable)</span>
+          <span className="text-info ml-2">
+            &#9432;{" "}
+            <span className="text-danger small">
+              Sory, we haven't update this feature
+            </span>
+          </span>
+        </label>
         {showErr()}
         {showSuccess()}
         <form onSubmit={onSubmit}>

@@ -5,17 +5,30 @@ import { useEffect } from "react";
 import { isAuth } from "../auth";
 import { viewOrders } from "../core/coreApi";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
+import { loadOrders } from "../actions/products";
 
-function Order({ items, ...props }) {
-  const [orders, setOrders] = useState([]);
+function Order({ orders, loadOrders, items, ...props }) {
   const { user, token } = isAuth();
 
   useEffect(() => {
     viewOrders(user._id, token).then((data) => {
       if (data.err) return;
-      else setOrders(data.orders);
+      else loadOrders(data.orders);
+      console.log(data.orders);
     });
   }, []);
+
+  const Delete = (id) => {
+    fetch(`${API_URL}/order/delete/${id}/${user._id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    loadOrders(orders.filter((p) => p._id !== id));
+  };
 
   return (
     <Layout
@@ -36,7 +49,7 @@ function Order({ items, ...props }) {
               <th>Total</th>
               <th>Paid</th>
               <th>Status</th>
-              <th></th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +62,13 @@ function Order({ items, ...props }) {
                 <th>{p.status}</th>
                 <th>
                   <Link to={`/order/${p._id}`}>Detail</Link>
+                  <span
+                    className="text-danger ml-3"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => Delete(p._id)}
+                  >
+                    Delete
+                  </span>
                 </th>
               </tr>
             ))}
@@ -62,7 +82,8 @@ function Order({ items, ...props }) {
 const mapstate2props = (state) => {
   return {
     items: state.products,
+    orders: state.order,
   };
 };
 
-export default connect(mapstate2props, {})(Order);
+export default connect(mapstate2props, { loadOrders })(Order);

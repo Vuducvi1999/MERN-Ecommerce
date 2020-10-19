@@ -4,14 +4,29 @@ import { isAuth, signout } from "../auth";
 import "../user/style.css";
 import Logo from "./Logo.png";
 import { connect } from "react-redux";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const Menu = (props) => {
-  // const [total, setTotal] = useState(0);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const navRef = useRef();
+  let prePositionY = window.scrollY;
 
-  // useEffect(() => setTotal(totalItems()), [localStorage.getItem("cart")]);
+  const handleScroll = () => {
+    if (window.scrollY - prePositionY > 0) {
+      navRef.current.style.transform = "translateY(-100%)";
+    } else navRef.current.style.transform = "translateY(0%)";
+    prePositionY = window.scrollY;
+  };
 
   return (
     <nav
+      ref={navRef}
       className="navbar navbar-expand-lg navbar-light bg-light justify-content-end py-2"
       style={{ backgroundImage: "linear-gradient(90deg,#00c4cc,#7d2ae8)" }}
     >

@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import AddCategory from "./admin/AddCategory";
-import AddProduct from "./admin/AddProduct";
 import AdminRoute from "./auth/AdminRoute";
 import PrivateRoute from "./auth/PrivateRoute";
 import Cart from "./core/Cart";
@@ -19,6 +17,8 @@ import Order from "./admin/Order";
 import DetailOrder from "./core/DetailOrder";
 import Products from "./core/Products";
 import UpdateUser from "./user/UpdateUser";
+import AddCategory from "./admin/AddCategory";
+import AddProduct from "./admin/AddProduct";
 
 const Routes = (props) => {
   useEffect(() => props.loadItemsLocalstorage(), [props]);

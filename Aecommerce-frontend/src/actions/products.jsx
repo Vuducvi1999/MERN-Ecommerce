@@ -9,6 +9,7 @@ import {
   ADD_TO_CART,
   ARRIVAL_ITEMS,
   LOAD_ITEMS,
+  LOAD_ORDERS,
   LOAD_REVIEWS,
   REMOVE_FROM_CART,
   RESET_ITEMS,
@@ -74,3 +75,6 @@ export const loadProducts = (sortBy, order = "desc", limit = 100) => (
 export const loadReviews = (data) => (dispatch) => {
   dispatch({ type: LOAD_REVIEWS, payload: data });
 };
+
+export const loadOrders = (data) => (dispatch) =>
+  dispatch({ type: LOAD_ORDERS, payload: data });

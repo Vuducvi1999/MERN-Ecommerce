@@ -9,6 +9,7 @@ const {
   getStatus,
   setStatus,
   detailOrder,
+  deleteOrder,
 } = require("../controller/order");
 const { userById } = require("../controller/user");
 const route = express.Router();
@@ -32,6 +33,13 @@ route.post(
   RequireSignIn,
   isAdmin,
   setStatus
+);
+
+route.delete(
+  "/order/delete/:orderId/:userId",
+  RequireSignIn,
+  isAdmin,
+  deleteOrder
 );
 
 route.get("/order/:orderId", RequireSignIn, detailOrder);
