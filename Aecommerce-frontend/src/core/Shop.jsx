@@ -82,11 +82,11 @@ function Shop(props) {
   return (
     <Layout
       description="Best Shop in the world"
-      className="container-fluid"
+      className="container"
       title="AnhViPanDan"
     >
       <div className="row mb-5">
-        <div className="col-md-3">
+        <div className="col-md-3 col-sm-4">
           <h3>Filter by Category</h3>
           <ul className="ml-5">
             <CheckBox categories={categories} handleFilter={handleFilter} />
@@ -96,7 +96,7 @@ function Shop(props) {
             <RadioBox handleFilter={handleFilter} />
           </ul>
         </div>
-        <div className="col-md-8">
+        <div className="col-md-9 col-sm-8">
           <div className="row">
             {filtedProducts.map((p) => (
               <div className="col-lg-4 col-md-6 col-sm-6 mb-3" key={p._id}>

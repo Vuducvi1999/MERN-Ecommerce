@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { memo } from "react";
 import Card from "./Card";
 import { searchHomeProducts } from "./coreApi";
 
@@ -12,6 +11,19 @@ function Search({ categories }) {
   });
 
   const { category, name } = values;
+
+  const [skip, setSkip] = useState(0);
+  const limit = 8;
+
+  const loadMore = () => (
+    <>
+      <div className="col-12">
+        <button className="btn btn-info" onClick={() => setSkip(skip + limit)}>
+          Load More
+        </button>
+      </div>
+    </>
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,11 +48,12 @@ function Search({ categories }) {
   const showProducts = () =>
     values.products.length !== 0 && (
       <>
-        {values.products.map((p) => (
+        {values.products.slice(0, skip + limit).map((p) => (
           <div className="col-lg-3 col-md-4 col-sm-6 mb-3" key={p._id}>
             <Card key={p._id} product={p} />
           </div>
         ))}
+        {skip + limit < values.products.length ? loadMore() : ""}
       </>
     );
   const showErr = () =>

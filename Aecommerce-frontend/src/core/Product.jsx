@@ -12,11 +12,13 @@ import {
   removeFromCart,
   updateItems,
 } from "./../actions/products";
-import ReactStars from "react-rating-stars-component";
+// import ReactStars from "react-rating-stars-component";
 import { uuid } from "./uuid";
 import { isAuth } from "../auth";
 import Review from "./Review";
 import { memo } from "react";
+import StarRating from "./StarRating";
+import { useRef } from "react";
 
 function Product(props) {
   const [product, setProduct] = useState();
@@ -25,7 +27,6 @@ function Product(props) {
   const [isInStock, setIsInStock] = useState(false);
 
   const { user } = isAuth();
-  const unique = uuid();
 
   useEffect(() => {
     singleProduct(props.match.params.productId).then((data) => {
@@ -44,10 +45,24 @@ function Product(props) {
     });
   }, [props.match.params.productId]);
 
+  const handleChange = (e) => {
+    if (e.target.checked) {
+      label.current.innerText = " show less";
+      showText.current.className = "d-inline";
+    } else {
+      label.current.innerText = " ...read more";
+      showText.current.className = "d-none";
+      window.scrollTo(0, 0);
+    }
+  };
+  const unique = uuid();
+  const label = useRef();
+  const showText = useRef();
+
   const RelatedProducts = () => (
     <>
       {related.map((p, k) => (
-        <div className="col-12 mb-5" key={k}>
+        <div className="col-md-12 col-sm-6 mb-3" key={k}>
           <Card product={p} />
         </div>
       ))}
@@ -56,15 +71,14 @@ function Product(props) {
 
   const Detail = () => (
     <>
-      <div className="col-md-8 col-sm-12">
+      <div className="col-md-9 col-sm-12">
         <div className="product">
-          <div className="image-container">
-            <img
-              src={`${API_URL}/product/photo/${product._id}`}
-              className="image-product"
-              alt={product.name}
-            />
-          </div>
+          <div
+            className="image-container"
+            style={{
+              backgroundImage: `url(${API_URL}/product/photo/${product._id})`,
+            }}
+          ></div>
           <div className="info-product">
             <div className="detail-container">
               <div className="name-product">
@@ -76,7 +90,30 @@ function Product(props) {
               </div>
               <hr />
               <div className="detail-product">
-                <span className="detail">{product.description}</span>
+                <span className="detail">
+                  {product.description.slice(0, 100)}
+                  <span ref={showText} className="d-none">
+                    {product.description.slice(100)}
+                  </span>
+                  {product.description.length > 100 ? (
+                    <label
+                      className="small text-info d-block"
+                      ref={label}
+                      htmlFor={unique}
+                      style={{ cursor: "pointer" }}
+                    >
+                      ... Read more
+                    </label>
+                  ) : (
+                    ""
+                  )}
+                  <input
+                    type="checkbox"
+                    id={unique}
+                    onChange={handleChange}
+                    hidden
+                  />
+                </span>
               </div>
               <div className="d-flex ">
                 <span className="sold-product">
@@ -106,18 +143,16 @@ function Product(props) {
                 </span>
               </div>
               <div className="review-rate d-flex align-items-center">
-                <ReactStars
-                  size={25}
-                  value={
+                <StarRating
+                  size="1.5rem"
+                  className="py-2"
+                  childStyle={{ paddingRight: "5px" }}
+                  rate={
                     product.rate.length !== 0
                       ? product.rate.reduce((p, x) => p + x.rate, 0) /
                         product.rate.length
                       : 0
                   }
-                  edit={false}
-                  activeColor="#ffd700"
-                  classNames="rates"
-                  isHalf={true}
                 />
                 <span className="number-review ml-3">
                   {product.rate.length !== 0 ? product.rate.length : 0}
@@ -186,20 +221,20 @@ function Product(props) {
             </div>
           </div>
         </div>
+        <Review product={product} user={user} />
       </div>
-      <div className="col-md-4 col-sm-6">
+      <div className="col-md-3 col-sm-12">
         <div className="related-product">
-          <h2>Related Products</h2>{" "}
-          <div className="row pr-3">{RelatedProducts()}</div>
+          <h3>Related Products</h3>
+          <div className="row ">{RelatedProducts()}</div>
         </div>
       </div>
-      <Review product={product} user={user} />
     </>
   );
 
   return (
     <Layout key={unique} description="Serve your needs" title="Product Detail">
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
           {product ? (
             Detail()

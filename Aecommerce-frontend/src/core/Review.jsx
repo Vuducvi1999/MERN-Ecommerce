@@ -1,9 +1,10 @@
 import React, { memo, useState } from "react";
 import { API_URL } from "../config";
-import ReactStars from "react-rating-stars-component";
+// import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { loadReviews } from "../actions/products";
+import StarRating from "./StarRating";
 
 function Review({ review, product, loadReviews, user, ...props }) {
   const [values, setValues] = useState({
@@ -53,19 +54,26 @@ function Review({ review, product, loadReviews, user, ...props }) {
   };
 
   const Review = () => (
-    <div className="col-md-8 col-sm-12 px-5">
+    <div className="" style={{ paddingLeft: "2rem" }}>
       <h5>YOUR REVIEW</h5>
       {user ? (
         <div className="person-review">
           <div className="d-flex align-items-center">
             <span>Vote:&nbsp;</span>
-            <ReactStars
-              size={25}
+            {/* <ReactStars
               value={values.rate}
               onChange={changeRating}
               activeColor="#ffd700"
               classNames="rates d-inline"
               isHalf={true}
+            /> */}
+            <StarRating
+              size="1.5rem"
+              className="py-2"
+              childStyle={{ paddingRight: "5px" }}
+              rate={values.rate}
+              onChange={changeRating}
+              hover={true}
             />
           </div>
           <form onSubmit={SubmitReview}>
@@ -90,28 +98,31 @@ function Review({ review, product, loadReviews, user, ...props }) {
         </div>
       )}
       <h5>REVIEWS</h5>
-      {review
-        ? review.map((p) => (
-            <div className="rated-view" key={p._id}>
-              <p className="m-0">{p.user.name}</p>
-              <ReactStars
-                value={p.rate}
-                activeColor="#ffd700"
-                isHalf={true}
-                edit={false}
-              />
-              <p className="m-0">
-                {p.review ? (
-                  p.review
-                ) : (
-                  <span className="text-muted small font-italic">
-                    User didn't comment
-                  </span>
-                )}
-              </p>
-            </div>
-          ))
-        : ""}
+      {review.length ? (
+        review.map((p) => (
+          <div className="rated-view" key={p._id}>
+            <p className="m-0">{p.user.name}</p>
+            {/* <ReactStars
+              value={p.rate}
+              activeColor="#ffd700"
+              isHalf={true}
+              edit={false}
+            /> */}
+            <StarRating rate={p.rate} />
+            <p style={{ marginTop: "1rem" }}>
+              {p.review ? (
+                p.review
+              ) : (
+                <span className="text-muted small font-italic">
+                  User didn't comment
+                </span>
+              )}
+            </p>
+          </div>
+        ))
+      ) : (
+        <div>No comment</div>
+      )}
     </div>
   );
   return <>{Review()}</>;

@@ -66,11 +66,11 @@ function Home({ items, arrival, sell, ...props }) {
   return (
     <div>
       <Layout title="Home" description="Welcome to AnhViPanDan Shop">
-        <div className="container-fluid">
+        <div className="container">
           <Search categories={values.categories} />
           <h2 className="mb-4">New Arrival</h2>
           <div className="row mb-5">
-            <div className="col-md-10 offset-md-1 col-sm-12">
+            <div className="col-md-12 col-sm-12">
               <div className="row">
                 {arrival.length ? (
                   arrival.slice(0, skipArrival + limit).map((i, k) => (
@@ -91,7 +91,7 @@ function Home({ items, arrival, sell, ...props }) {
 
           <h2 className="mb-4">Best Sell</h2>
           <div className="row">
-            <div className="col-md-10 offset-md-1 col-sm-12">
+            <div className="col-md-12 col-sm-12">
               <div className="row">
                 {sell.length ? (
                   sell.slice(0, skipSell + limit).map((i, k) => (

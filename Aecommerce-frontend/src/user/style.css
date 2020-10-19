@@ -6,6 +6,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: "Raleway", sans-serif;
+  scroll-behavior: smooth;
 }
 
 .light-border.rounded:hover {
@@ -26,18 +27,25 @@ body {
 
 .product-card {
   display: flex;
-  border-radius: 5px;
+  flex-direction: column;
+  border-radius: 3px;
   font-family: "Raleway", sans-serif;
-  padding: 1em 0.5em 1em 0;
+  /* padding: 1em 0.5em 1em 0; */
+  padding: 0.5rem;
   border: 1px solid #ccc;
   background-color: white;
 }
 
 .image-container-card {
-  position: relative;
-  flex-basis: 50%;
+  width: 100%;
+  padding-top: 80%;
+  background-size: cover;
+  background-position: center;
 }
-
+.image-container-card:hover {
+  filter: brightness(50%);
+  transition: 0.2s;
+}
 .image-card {
   position: relative;
 }
@@ -51,7 +59,7 @@ body {
   justify-content: space-between;
 }
 .rated-view {
-  padding: 1rem 1rem 1rem 0;
+  padding: 1rem 1rem 0rem 0;
   border-bottom: 1px solid rgb(197, 197, 197);
   margin-bottom: 1rem;
   margin-left: 1rem;
@@ -64,20 +72,18 @@ body {
   width: 100%;
   height: auto;
   top: 0;
+  margin: auto;
   /* bottom: 0; */
-  margin-left: -10%;
-  border-radius: 10px;
   transition: 0.3s;
 }
 
 .image-product-card:hover {
-  width: 110%;
-  margin-left: -15%;
-  transition: linear 0.3s;
+  transition: linear 0.2s;
 }
 
 .detail-card {
   flex-basis: 50%;
+  margin-top: 0.5rem;
 }
 
 .product-detail-card {
@@ -87,7 +93,7 @@ body {
 
 .product-name-card {
   color: black;
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: 900;
 }
 
@@ -95,7 +101,7 @@ body {
   font-family: "Raleway", sans-serif;
   line-height: 1em;
   color: #ff3f40;
-  font-size: 1.5em;
+  margin: 0;
 }
 
 .product-price-card span {
@@ -108,6 +114,10 @@ body {
   margin: 0;
   color: #888;
   font-size: 1.2rem;
+}
+
+.product-category-card {
+  line-height: 0;
 }
 
 .product-sold-card {
@@ -180,8 +190,6 @@ body {
 .info-product {
   flex-grow: 1;
   position: relative;
-  display: flex;
-  align-items: center;
 }
 /* .detail-container {
   position: absolute;
@@ -202,10 +210,9 @@ body {
   z-index: 2;
 } */
 
-.detail-container {
+/* .detail-container {
   padding: 0 1em 1em 1em;
   background-color: #f5f6fa;
-  /* position: absolute; */
   top: 0;
   left: 0;
   bottom: 0;
@@ -213,7 +220,6 @@ body {
   margin: auto;
   height: fit-content;
   width: 100%;
-  /* border: solid 6px #2222; */
   border-left: none;
   border-radius: 1rem;
   border-top-left-radius: 0;
@@ -222,7 +228,7 @@ body {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 
   background-size: 400%;
-}
+} */
 
 /* .box {
   background-image: linear-gradient(
@@ -499,4 +505,71 @@ th {
 
 .info-product-order {
   flex-basis: 50%;
+}
+
+/* CSS product again */
+.product {
+  display: flex;
+  padding: 0;
+  padding-top: 0;
+  align-items: flex-start;
+}
+.image-container {
+  box-shadow: 4px 1px 26px 0px rgba(0, 0, 0, 0.5);
+  flex-basis: 40%;
+  padding: 0;
+  padding-top: 45%;
+  background-size: 100% 100%;
+  background-position: top left;
+  z-index: 1;
+}
+
+.image-product {
+  width: 100%;
+}
+
+.info-product {
+  flex-basis: 50%;
+  background-color: #fff;
+  align-items: flex-start;
+}
+
+.related-product {
+  padding: 0;
+  margin-left: 1rem;
+}
+
+.padding-product {
+  padding: 0;
+}
+
+.detail-container {
+  margin-left: 2rem;
+}
+
+.total-price {
+  font-size: 2rem;
+}
+.name-product {
+  padding-top: 0;
+}
+
+.left-star,
+.right-star {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+
+.left-star {
+  left: 0;
+  top: 0;
+}
+.right-star {
+  right: 0;
+  top: 0;
+}
+
+.container-star {
+  position: relative;
 }
