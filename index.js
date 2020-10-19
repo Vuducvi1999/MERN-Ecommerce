@@ -40,8 +40,10 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`server start port ${process.env.PORT}`);
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+  console.log(`server start port ${port}`);
 });
 
 app.get("/", (req, res) => {
