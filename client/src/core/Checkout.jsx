@@ -54,7 +54,7 @@ function Checkout({ items, ...props }) {
       ? setValues({
           ...values,
           success: false,
-          err: "Couldn't process empty product",
+          err: "Couldn't process empty product ",
         })
       : createOrder(user._id, token, {
           products: items,
