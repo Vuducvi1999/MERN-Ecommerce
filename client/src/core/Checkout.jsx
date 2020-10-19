@@ -17,7 +17,9 @@ function Checkout({ items, ...props }) {
   const { address, sdt } = values;
 
   const signinBtn = () => (
-    <Link to="/signin">
+    <Link
+      to={{ pathname: "/signin", state: { prevPath: props.location.pathname } }}
+    >
       <button className="btn btn-primary">Sign in to process</button>
     </Link>
   );
@@ -49,7 +51,11 @@ function Checkout({ items, ...props }) {
   const onSubmit = (e) => {
     e.preventDefault();
     items.length === 0 || items.find((i) => i.quantity === 0)
-      ? setValues({ ...values, err: "Couldn't process empty product" })
+      ? setValues({
+          ...values,
+          success: false,
+          err: "Couldn't process empty product",
+        })
       : createOrder(user._id, token, {
           products: items,
           amount: items.reduce((pre, cur) => pre + cur.quantity * cur.price, 0),
@@ -90,9 +96,10 @@ function Checkout({ items, ...props }) {
               className="form-control mt-2"
               placeholder="Ex: Khu 4B, Thi Tran Con, Hai Hau, Nam Dinh"
               value={address}
-              onChange={(e) =>
-                setValues({ ...values, address: e.target.value })
-              }
+              onChange={(e) => {
+                setValues({ ...values, address: e.target.value });
+                console.log(props.location);
+              }}
             />
           </label>
           <label className="font-weight-light text-muted d-block">

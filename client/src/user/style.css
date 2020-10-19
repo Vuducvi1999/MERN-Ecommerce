@@ -434,11 +434,11 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .image-product-cart {
-  width: 50%;
+  width: 80%;
 }
 
 .info-product-cart {
-  flex-basis: 60%;
+  flex-basis: 40%;
   text-align: center;
   margin: auto;
   padding: 0 0.5rem;
@@ -456,7 +456,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .calculate-product-cart {
-  flex-basis: 40%;
+  flex-basis: 60%;
   display: flex;
 }
 

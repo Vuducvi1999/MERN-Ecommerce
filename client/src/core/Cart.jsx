@@ -113,7 +113,7 @@ function Cart({ items, ...props }) {
         </div>
         <div className="col-md-5 px-3 col-sm-12">
           <h3 style={{ marginBottom: "1rem" }}>Checkout</h3>
-          <Checkout />
+          <Checkout location={props.location} />
         </div>
       </div>
     </Layout>

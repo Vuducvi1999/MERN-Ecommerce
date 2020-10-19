@@ -4,7 +4,7 @@ import { authenticate, signin } from "../auth";
 import Layout from "../core/Layout";
 import { isAuth } from "./../auth/index";
 
-function SignIn() {
+function SignIn({ match, location, history, ...props }) {
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -16,6 +16,9 @@ function SignIn() {
   const handleChange = (event) => {
     const target = event.target;
     setValues({ ...values, [target.name]: target.value });
+    console.log("match", match);
+    console.log("history", history);
+    console.log("location", location);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -42,7 +45,9 @@ function SignIn() {
 
   const redirectHome = () =>
     values.redirect ? (
-      user.role === 0 ? (
+      location.state.prevPath ? (
+        <Redirect to={`${location.state.prevPath}`} />
+      ) : user.role === 0 ? (
         <Redirect to="/user/dashboard" />
       ) : (
         <Redirect to="/admin/dashboard" />
