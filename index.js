@@ -25,11 +25,14 @@ app.use("/api", OrderRouter);
 
 // connect db
 mongoose
-  .connect(process.env.DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://vuducvi:vuducvi@cluster0.z8cct.gcp.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    }
+  )
   .then(console.log("connect db success"))
   .catch(console.log("connect db fail"));
 
