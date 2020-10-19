@@ -14,14 +14,19 @@ const Menu = (props) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const navRef = useRef();
   let prePositionY = window.scrollY;
+  let temp = 0;
 
   const handleScroll = () => {
-    if (window.scrollY - prePositionY > 0) {
+    prePositionY = temp;
+    if (window.scrollY - prePositionY >= 0) {
       navRef.current.style.transform = "translateY(-100%)";
     } else navRef.current.style.transform = "translateY(0%)";
-    prePositionY = window.scrollY;
+    temp = window.scrollY;
+    console.log("prePositionY", prePositionY);
+    console.log("window.scrollY", window.scrollY);
   };
 
   return (

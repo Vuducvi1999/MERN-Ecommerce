@@ -21,7 +21,7 @@ function Layout({
 
   return (
     <>
-      <div className="" ref={menuRef}>
+      <div className="navbar-container" ref={menuRef}>
         <Menu />
       </div>
       {/* <div className="jumbotron row no-gutters p-0 text-center"> */}
