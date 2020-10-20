@@ -35,14 +35,13 @@ mongoose
       useCreateIndex: true,
     }
   )
-  .then(console.log("connect db success"))
-  .catch(console.log("connect db fail"));
+  .then((data) => console.log("connect db success"))
+  .catch((err) => console.log("connect db fail"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client/build/index.html"));
-    console.log(path.resolve(__dirname, "client/build/index.html"));
   });
 }
 
