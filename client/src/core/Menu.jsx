@@ -1,15 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import { isAuth, signout } from "../auth";
 import "../user/style.css";
 import Logo from "./Logo.png";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { useState } from "react";
 
 const Menu = (props) => {
+  const [user, setUser] = useState();
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    setUser(isAuth().user);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -17,14 +21,13 @@ const Menu = (props) => {
 
   const navRef = useRef();
   let prePositionY = window.scrollY;
-  let temp = 0;
 
   const handleScroll = () => {
-    prePositionY = temp;
     if (window.scrollY - prePositionY >= 0) {
       navRef.current.style.transform = "translateY(-100%)";
     } else navRef.current.style.transform = "translateY(0%)";
-    temp = window.scrollY;
+
+    prePositionY = window.scrollY;
     console.log("prePositionY", prePositionY);
     console.log("window.scrollY", window.scrollY);
   };
@@ -70,7 +73,7 @@ const Menu = (props) => {
           {props.items.length ? props.items.length : ""}
         </span>
       </NavLink>
-      {isAuth() && isAuth().user.role === 0 && (
+      {user && user.role === 0 && (
         <NavLink
           to="/user/dashboard"
           className="nav-link text-light light-border rounded mx-1"
@@ -79,7 +82,7 @@ const Menu = (props) => {
           Dashboard
         </NavLink>
       )}
-      {isAuth() && isAuth().user.role === 1 && (
+      {user && user.role === 1 && (
         <NavLink
           to="/admin/dashboard"
           className="nav-link text-light light-border rounded mx-1"
@@ -88,7 +91,7 @@ const Menu = (props) => {
           Dashboard
         </NavLink>
       )}
-      {!isAuth() ? (
+      {!user ? (
         <>
           <NavLink
             to="/signup"
@@ -108,12 +111,13 @@ const Menu = (props) => {
       ) : (
         ""
       )}
-      {isAuth() ? (
+      {user ? (
         <NavLink
           to="/"
           className="nav-link text-light light-border rounded mx-1"
           onClick={() => {
             signout();
+            setUser(null);
           }}
         >
           Sign Out

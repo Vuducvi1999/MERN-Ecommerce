@@ -16,7 +16,7 @@ function Layout({
 }) {
   const menuRef = useRef();
   useEffect(() => {
-    console.log(menuRef.current.offsetHeight);
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -49,7 +49,7 @@ function Layout({
             marginBottom: "1rem",
           }}
         >
-          <h1 className="title-banner">{title}</h1>
+          <h1 className="title-banner">Welcome to AnhViPanDan shop</h1>
           <span
             className="title-banner"
             style={{
@@ -58,7 +58,7 @@ function Layout({
               fontSize: "2rem",
             }}
           >
-            {description}
+            All products is free
           </span>
         </div>
       ) : (
