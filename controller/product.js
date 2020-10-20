@@ -235,7 +235,8 @@ module.exports.updateRate = (req, res) => {
 
   product.save().then((data) =>
     res.json({
-      rate: data.rate.reduce((p, x) => p + x.rate, 0) / data.rate.length,
+      rate: data.rate,
+      // rate: data.rate.reduce((p, x) => p + x.rate, 0) / data.rate.length,
     })
   );
 };

@@ -25,6 +25,7 @@ function Product(props) {
   const [total, setTotal] = useState(0);
   const [related, setRelated] = useState([]);
   const [isInStock, setIsInStock] = useState(false);
+  const [willReload, setWillReload] = useState(true);
 
   const { user } = isAuth();
 
@@ -221,7 +222,12 @@ function Product(props) {
             </div>
           </div>
         </div>
-        <Review product={product} user={user} />
+        <Review
+          setWillReload={setWillReload}
+          product={product}
+          currentLocation={props.match.params.productId}
+          user={user}
+        />
       </div>
       <div className="col-md-3 col-sm-12">
         <div className="related-product">
@@ -233,7 +239,12 @@ function Product(props) {
   );
 
   return (
-    <Layout key={unique} description="Serve your needs" title="Product Detail">
+    <Layout
+      key={unique}
+      reload={willReload}
+      description="Serve your needs"
+      title="Product Detail"
+    >
       <div className="container">
         <div className="row">
           {product ? (

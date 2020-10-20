@@ -6,7 +6,15 @@ import { connect } from "react-redux";
 import { loadReviews } from "../actions/products";
 import StarRating from "./StarRating";
 
-function Review({ review, product, loadReviews, user, ...props }) {
+function Review({
+  currentLocation,
+  review,
+  product,
+  loadReviews,
+  setWillReload,
+  user,
+  ...props
+}) {
   const [values, setValues] = useState({
     rate: 0,
     review: "",
@@ -18,6 +26,7 @@ function Review({ review, product, loadReviews, user, ...props }) {
 
   const SubmitReview = (e) => {
     e.preventDefault();
+    setWillReload(false);
     setValues({ rate: 0, review: "" });
     fetch(`${API_URL}/products/rate/${product._id}/${user._id}`, {
       method: "POST",
@@ -31,27 +40,30 @@ function Review({ review, product, loadReviews, user, ...props }) {
           review: values.review,
         },
       }),
-    });
+    }).then((res) =>
+      res.json().then((dataRate) => {
+        console.log("rateUpdate", dataRate);
+        // if (review.find((p) => p.user._id === user._id)) {
+        //   review.forEach((p) => {
+        //     if (p.user._id === user._id) {
+        //       p.rate = values.rate;
+        //       p.review = values.review;
+        //     }
+        //   });
+        // } else
+        //   review = [
+        //     ...review,
+        //     {
+        //       user: user._id,
+        //       rate: values.rate,
+        //       review: values.review,
+        //     },
+        //   ];
 
-    if (review.find((p) => p.user._id === user._id)) {
-      review.forEach((p) => {
-        if (p.user._id === user._id) {
-          p.rate = values.rate;
-          p.review = values.review;
-        }
-      });
-    } else
-      review = [
-        ...review,
-        {
-          user: user._id,
-          rate: values.rate,
-          review: values.review,
-        },
-      ];
-
-    loadReviews(review);
-    console.log(review);
+        loadReviews(dataRate.rate);
+        console.log(review);
+      })
+    );
   };
 
   const Review = () => (
@@ -88,7 +100,16 @@ function Review({ review, product, loadReviews, user, ...props }) {
         </div>
       ) : (
         <div className="bg-light rounded p-3">
-          Please <Link to="/signin">sign in</Link> to write your review
+          Please{" "}
+          <Link
+            to={{
+              pathname: "/signin",
+              state: { prevPath: "/product/" + currentLocation },
+            }}
+          >
+            sign in
+          </Link>{" "}
+          to write your review
         </div>
       )}
       <h5>REVIEWS</h5>

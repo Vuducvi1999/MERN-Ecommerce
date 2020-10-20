@@ -16,9 +16,6 @@ function SignIn({ match, location, history, ...props }) {
   const handleChange = (event) => {
     const target = event.target;
     setValues({ ...values, [target.name]: target.value });
-    console.log("match", match);
-    console.log("history", history);
-    console.log("location", location);
   };
   const handleSubmit = (event) => {
     event.preventDefault();

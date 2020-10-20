@@ -28,8 +28,6 @@ const Menu = (props) => {
     } else navRef.current.style.transform = "translateY(0%)";
 
     prePositionY = window.scrollY;
-    console.log("prePositionY", prePositionY);
-    console.log("window.scrollY", window.scrollY);
   };
 
   return (

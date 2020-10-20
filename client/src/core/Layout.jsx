@@ -9,14 +9,13 @@ import { useEffect } from "react";
 function Layout({
   banner = false,
   marginTop = true,
-  title,
-  description,
+  reload = true,
   children,
   className,
 }) {
   const menuRef = useRef();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (reload) window.scrollTo(0, 0);
   }, []);
 
   return (

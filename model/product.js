@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Rate = new Schema({
-  user: { type: mongoose.Types.ObjectId, ref: "user" },
-  rate: Number,
-  review: { type: String, default: "" },
-});
+const Rate = new Schema(
+  {
+    user: { type: mongoose.Types.ObjectId, ref: "user" },
+    rate: Number,
+    review: { type: String, default: "" },
+  },
+  { timestamps: true }
+);
 
 // Create Schema
 const Product = new Schema(
