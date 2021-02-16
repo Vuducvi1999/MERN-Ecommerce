@@ -65,9 +65,14 @@ export const loadProducts = (sortBy, order = "desc", limit = 100) => (
   })
     .then((res) => res.json())
     .then((data) => {
+      const payloadData = data.map((item) => {
+        if (item.category) return item;
+        else item.category = { name: "None" };
+        return item;
+      });
       if (sortBy === "createdAt")
-        dispatch({ type: ARRIVAL_ITEMS, payload: data });
-      else dispatch({ type: SELL_ITEMS, payload: data });
+        dispatch({ type: ARRIVAL_ITEMS, payload: payloadData });
+      else dispatch({ type: SELL_ITEMS, payload: payloadData });
     })
     .catch((err) => console.log(err));
 };
