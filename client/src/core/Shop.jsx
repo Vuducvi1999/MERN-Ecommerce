@@ -6,6 +6,7 @@ import { getFilterProducts } from "./coreApi";
 import Layout from "./Layout";
 import RadioBox from "./RadioBox";
 import { connect } from "react-redux";
+import { uuid } from "./uuid";
 
 function Shop(props) {
   const [categories, setCategories] = useState();
@@ -16,10 +17,12 @@ function Shop(props) {
   const [values, setValues] = useState({
     err: "",
     size: 0,
-    limit: 6,
+    limit: 1000000,
     skip: 0,
   });
   const [filtedProducts, setFiltedProduct] = useState([]);
+  const [pagination, setPagination] = useState(1);
+  const [pages, setPages] = useState([]);
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -27,10 +30,23 @@ function Shop(props) {
     });
 
     getFilterProducts(values.limit, values.skip, filters).then((data) => {
-      setFiltedProduct(data.products);
+      setPagination(1);
+      const payloadData = data.products.map((item) => {
+        if (item.category) return item;
+        else item.category = { name: "None" };
+        return item;
+      });
+      setFiltedProduct(payloadData);
       setValues({ ...values, size: data.size });
     });
   }, []);
+
+  useEffect(() => {
+    let sl = Math.ceil(filtedProducts.length / 6);
+    let result = [];
+    for (let i = 1; i < sl + 1; i++) result.push(i);
+    setPages(result);
+  }, [filtedProducts]);
 
   const isInCart = (id) =>
     props.items.find((p) => p._id === id) ? true : false;
@@ -41,7 +57,13 @@ function Shop(props) {
         ...filters,
         category: filter,
       }).then((data) => {
-        setFiltedProduct(data.products);
+        setPagination(1);
+        const payloadData = data.products.map((item) => {
+          if (item.category) return item;
+          else item.category = { name: "None" };
+          return item;
+        });
+        setFiltedProduct(payloadData);
         setValues({ ...values, size: data.size, skip: 0 });
       });
       setFilters({ ...filters, category: filter });
@@ -50,7 +72,13 @@ function Shop(props) {
         ...filters,
         price: filter,
       }).then((data) => {
-        setFiltedProduct(data.products);
+        setPagination(1);
+        const payloadData = data.products.map((item) => {
+          if (item.category) return item;
+          else item.category = { name: "None" };
+          return item;
+        });
+        setFiltedProduct(payloadData);
         setValues({ ...values, size: data.size, skip: 0 });
       });
       setFilters({ ...filters, price: filter });
@@ -61,7 +89,13 @@ function Shop(props) {
     getFilterProducts(values.limit, values.skip + values.size, {
       ...filters,
     }).then((data) => {
-      setFiltedProduct([...filtedProducts, ...data.products]);
+      setPagination(1);
+      const payloadData = data.products.map((item) => {
+        if (item.category) return item;
+        else item.category = { name: "None" };
+        return item;
+      });
+      setFiltedProduct([...filtedProducts, ...payloadData]);
       setValues({
         ...values,
         size: data.size,
@@ -70,14 +104,52 @@ function Shop(props) {
     });
   };
 
-  const loadMoreBtn = () =>
-    values.size === values.limit && (
-      <div className="col-12">
-        <button className="btn btn-info" onClick={loadMore}>
-          Load More
-        </button>
-      </div>
-    );
+  const LoadPagination = () => (
+    <ul className="pagination">
+      <li
+        className="page-item page-link"
+        onClick={() => {
+          if (pagination === 1) return;
+          setPagination(pagination - 1);
+        }}
+      >
+        Previous
+      </li>
+      {pages.map((p) => {
+        return p === pagination ? (
+          <li
+            className="page-item page-link"
+            style={{ backgroundColor: "#007bff", color: "#fff" }}
+            key={uuid()}
+            onClick={() => {
+              setPagination(p);
+            }}
+          >
+            <a className="">{p}</a>
+          </li>
+        ) : (
+          <li
+            onClick={() => {
+              setPagination(p);
+            }}
+            className="page-item page-link"
+            key={uuid()}
+          >
+            {p}
+          </li>
+        );
+      })}
+      <li
+        onClick={() => {
+          if (pagination === pages.length) return;
+          setPagination(pagination + 1);
+        }}
+        className="page-item page-link"
+      >
+        Next
+      </li>
+    </ul>
+  );
 
   return (
     <Layout
@@ -85,25 +157,38 @@ function Shop(props) {
       className="container"
       title="AnhViPanDan"
     >
-      <div className="row mb-5">
+      <div className="row no-gutters mb-5">
         <div className="col-md-3 col-sm-4">
-          <h3>Filter by Category</h3>
-          <ul className="ml-5">
-            <CheckBox categories={categories} handleFilter={handleFilter} />
-          </ul>
-          <h3>Filter by Range</h3>
-          <ul className="ml-5">
-            <RadioBox handleFilter={handleFilter} />
-          </ul>
+          <h3 className="box-sm-center">Filter by Category</h3>
+          <div className="box-sm-center">
+            <ul className="ml-5">
+              <CheckBox categories={categories} handleFilter={handleFilter} />
+            </ul>
+          </div>
+          <h3 className="box-sm-center">Filter by Range</h3>
+          <div className="box-sm-center">
+            <ul className="ml-5">
+              <RadioBox handleFilter={handleFilter} />
+            </ul>
+          </div>
         </div>
         <div className="col-md-9 col-sm-8">
-          <div className="row">
-            {filtedProducts.map((p) => (
-              <div className="col-lg-4 col-md-6 col-sm-6 mb-3" key={p._id}>
-                <Card product={p} isAdded={isInCart(p._id)} />
-              </div>
-            ))}
-            {loadMoreBtn()}
+          <div className="row no-gutters">
+            {filtedProducts
+              .slice((pagination - 1) * 6, pagination * 6)
+              .map((p) => (
+                <div
+                  className="col-lg-4 p-2 col-md-6 col-sm-6 mb-3"
+                  key={p._id}
+                >
+                  <div className="mx-4 mx-sm-0">
+                    <Card product={p} isAdded={isInCart(p._id)} />
+                  </div>
+                </div>
+              ))}
+            <div className="col-12 d-flex justify-content-center">
+              {LoadPagination()}
+            </div>
           </div>
         </div>
         <div className="col-md-1"></div>
