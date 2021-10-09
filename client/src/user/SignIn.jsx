@@ -45,7 +45,7 @@ function SignIn({ match, location, history, ...props }) {
 
   const redirectHome = () =>
     values.redirect ? (
-      location.state.prevPath ? (
+      location.state ? (
         <Redirect to={`${location.state.prevPath}`} />
       ) : user.role === 0 ? (
         <Redirect to="/user/dashboard" />

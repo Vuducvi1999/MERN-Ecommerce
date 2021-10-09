@@ -42,7 +42,6 @@ function Footer() {
               >
                 Admin account
               </h4>
-              <p>Lưu ý: đừng đổi mật khẩu admin</p>
               <p>Email: vuducvi20@gmail.com</p>
               <p>Pasword: 1234</p>
             </div>

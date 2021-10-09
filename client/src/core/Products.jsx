@@ -55,7 +55,7 @@ function Products({ ...props }) {
                 <th>{p._id}</th>
                 <th>{p.name}</th>
                 <th>{p.price}</th>
-                <th>{p.category.name}</th>
+                <th>{p.category ? p.category.name : 'None'}</th>
                 <th>
                   <span
                     className="text-danger"

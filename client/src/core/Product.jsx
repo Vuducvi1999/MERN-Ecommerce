@@ -121,7 +121,7 @@ function Product(props) {
                 </span>
                 <span className="category-product">
                   Category&nbsp;
-                  <span className="category">{product.category.name} </span>
+                  <span className="category">{product.category ? product.category.name : "None"} </span>
                 </span>
               </div>
               <div className="d-flex ">
